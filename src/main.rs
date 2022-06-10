@@ -8,7 +8,7 @@ use systemstat::{System, Platform};
 fn main() {
     let cpus = num_cpus::get();
     let pool = rayon::ThreadPoolBuilder::new().num_threads(cpus + 2).build().unwrap();
-    
+
     for i in 1..500 {
         pool.spawn(move || {
             println!("Thread {}", i);
@@ -32,7 +32,10 @@ fn main() {
                 println!("CPU load: {}% user, {}% nice, {}% system, {}% intr, {}% idle ",
                          cpu.user * 100.0, cpu.nice * 100.0, cpu.system * 100.0, cpu.interrupt * 100.0, cpu.idle * 100.0);
             },
-            Err(x) => println!("\nCPU load: error: {}", x)
+            Err(x) => {
+                println!("\nCPU load: error: {}", x);
+                sleep(Duration::from_secs(1));
+            }
         }
     }
 }
