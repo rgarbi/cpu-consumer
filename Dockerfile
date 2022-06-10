@@ -18,7 +18,7 @@ RUN adduser \
 
 WORKDIR /cpu-consumer
 
-COPY src .
+COPY ./ .
 
 RUN cargo build --release
 
@@ -35,7 +35,6 @@ WORKDIR /cpu-consumer
 
 # Copy our build
 COPY --from=builder /cpu-consumer/target/release/cpu-consumer ./
-COPY --from=builder /cpu-consumer/configuration ./configuration
 
 # Use an unprivileged user.
 USER cpu-consumer:cpu-consumer
